@@ -1,0 +1,47 @@
+pipeline {
+	agent {
+		label{
+				label "built-in"
+				customWorkspace "/mnt/game-of-life"
+		
+		}
+	}
+	
+	stages {
+			stage ('clone repo') {
+					steps {
+					        sh"git clone <git url>"
+                                                         
+					}
+			}
+			
+			stage ('remove maven repo') {
+					steps {
+                                                sh"rm-rf /root/.m2/repository"
+
+					
+							 
+				             }
+				}
+			
+
+			stage ('install maven') {
+					steps {
+						sh " mvn clean install -DskipTests=True"
+                                                         
+					}
+			} 
+           
+                        stage ('deployment of war file') {
+					steps {
+					        sh " cp -r gameoflife-web/target/gameoflife.war /mnt/server/apache-tomcat/webapps/"
+                                                         
+					}
+			}
+             }
+
+			
+	
+	}
+
+}
